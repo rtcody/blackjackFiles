@@ -25,7 +25,7 @@ int main()
 
     Sprite card2(x2);
     card2.setScale(0.35f, 0.35f);
-    card2.setPosition(920,800);
+    card2.setPosition(920,700);
 
 
     while (window.isOpen())
@@ -47,4 +47,3 @@ int main()
 
     return 0;
 }
-
