@@ -1,23 +1,32 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-using sf::Texture; 
-using sf::Sprite; 
+using sf::Texture;
+using sf::Sprite;
 
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML works!");
-    sf::CircleShape shape(100.f);
-    Texture queenOHearts; 
-    queenOHearts.loadFromFile("Cards/queen_of_hearts2.png"); 
-    Sprite hearts(queenOHearts);   
-    shape.setFillColor(sf::Color::Green);   
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "BLACKJACK");
 
     Texture b;
-    b.loadFromFile("background.png");
+    b.loadFromFile("Cards/background.png");
 
-    Sprite background(b); 
+    Sprite background(b);
     background.setScale(1.5f, 1.5f);
+
+    Texture x1;
+    x1.loadFromFile("Cards/jack_of_hearts2.png");
+    Texture x2;
+    x2.loadFromFile("Cards/ace_of_diamonds.png");
+
+    Sprite card1(x1);
+    card1.setScale(0.35f, 0.35f);
+    card1.setPosition(820, 800);
+
+    Sprite card2(x2);
+    card2.setScale(0.35f, 0.35f);
+    card2.setPosition(920,800);
+
 
     while (window.isOpen())
     {
@@ -28,12 +37,14 @@ int main()
                 window.close();
         }
 
-        
+
         window.clear();
         window.draw(background);
-        window.draw(hearts);
+        window.draw(card1);
+        window.draw(card2);
         window.display();
     }
 
     return 0;
 }
+
