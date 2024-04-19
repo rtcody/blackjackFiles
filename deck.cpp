@@ -1,3 +1,4 @@
+
 #include "deck.hpp"
 
 Deck::Deck()
@@ -14,20 +15,20 @@ Deck::Deck()
 		temp.setValue(stoi(trash));
 
 		getline(file, trash, ',');
-		temp.setSuit(trash[0]); 
+		temp.setSuit(trash[0]);
 
 		getline(file, trash);
 		temp.setImage(trash);
-		
-		cards[i] = temp; 
 
-		
+		cards[i] = temp;
+
+
 	}
 }
 
 Deck::~Deck()
 {
-	
+
 }
 
 card* Deck::getCards()
