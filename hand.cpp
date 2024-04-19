@@ -1,3 +1,4 @@
+
 #include "hand.hpp"
 
 //Joey working on hand
@@ -6,36 +7,36 @@
 	/// Hand constructor that takes in game deck 
 	/// </summary>
 	/// <param name="gameDeck"></param>
-Hand::Hand(Deck &gameDeck)
+Hand::Hand(Deck& gameDeck)
 {
-	handValue = 0;   
-	gameDeck.shuffle(); 
-	blackjackHand[0] = gameDeck.getCard(0); 
-	gameDeck.shuffle(); 
+	handValue = 0;
+	gameDeck.shuffle();
+	blackjackHand[0] = gameDeck.getCard(0);
+	gameDeck.shuffle();
 	blackjackHand[1] = gameDeck.getCard(0); // since we shuffled it can be pulled from the top of the deck 
 
-	cardCount = 2;  
-	computeHandValue();       
+	cardCount = 2;
+	computeHandValue();
 }
 
 /// <summary>
 	/// computes the numerical value of the entire hand
 	/// </summary>
 	/// <returns>the total value of the hand</returns> not anymore
-void Hand::computeHandValue()   
+void Hand::computeHandValue()
 {
-	int numAces = 0;    
+	int numAces = 0;
 
 	for (int i = 0; i < cardCount; i++)
 	{
-		if (blackjackHand[i].getValue() != 1)  
+		if (blackjackHand[i].getValue() != 1)
 		{
 			handValue += blackjackHand[i].getValue(); // computes the hand value if the card isnt an ace
 		}
 		else
 		{
 			numAces++; //tracks aces
-		} 
+		}
 
 	}
 
@@ -43,22 +44,22 @@ void Hand::computeHandValue()
 	{
 		if (handValue + 11 <= 21) //if ace being 11 wont have the hand bust, 11 is added to the value 
 		{
-			handValue += 11;  
-		} 
-		else 
+			handValue += 11;
+		}
+		else
 		{
 			handValue += 1; //else one is added to the value 
-		}  
-	} 
+		}
+	}
 }
 
-int Hand::computeHandValue(card dummyHand[11]) 
+int Hand::computeHandValue(card dummyHand[11])
 {
 	int newHandValue = 0, numAces = 0;
 
-	for (int i = 0; i < cardCount; i++) 
+	for (int i = 0; i < cardCount; i++)
 	{
-		if (dummyHand[i].getValue() != 1)  
+		if (dummyHand[i].getValue() != 1)
 		{
 			newHandValue += dummyHand[i].getValue(); // computes the hand value if the card isnt an ace   
 		}
@@ -90,14 +91,14 @@ int Hand::computeHandValue(card dummyHand[11])
 	/// <param name="gameDeck"></param>
 void Hand::hit(Deck& gameDeck)
 {
-	int i = 0; 
+	int i = 0;
 
-	for (; i < cardCount; i++)     
+	for (; i < cardCount; i++)
 	{
 		// gets to one slot above the current card count 
 	}
 
-	cardCount = i+1; //total cards added is updated 
+	cardCount = i + 1; //total cards added is updated 
 
 	gameDeck.shuffle();  // reshuffle deck 
 
@@ -107,10 +108,15 @@ void Hand::hit(Deck& gameDeck)
 
 card Hand::getCard(int index)
 {
-	return blackjackHand[index];     
+	return blackjackHand[index];
 }
 
 int Hand::getHandValue()
 {
-	return handValue;        
+	return handValue;
+}
+
+void Hand::displayHand()
+{
+
 }
