@@ -8,19 +8,19 @@
 class Test
 {
 public:
-	Test(); 
-	~Test(); 
+	Test();
+	~Test();
 
-	void testDeckCreation(void);       
+	void testDeckCreation(void);
 
-	void testDeckShuffle(void);   
+	void testDeckShuffle(void);
 
-	void testHandPopulation(void); 
+	void testHandPopulation(void);
 
-	void testAcesCalculation(void);        
+	void testAcesCalculation(void);
 
 	//test here
 
-	void runTests(void);  
+	void runTests(void);
 private:
 };
