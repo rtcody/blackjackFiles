@@ -1,9 +1,10 @@
+
 #pragma once
 #include "card.hpp"
 
 #define deckSize 52
- 
-class Deck 
+
+class Deck
 {
 public:
 	Deck();
@@ -16,5 +17,5 @@ public:
 	void shuffle(void);
 
 private:
-	card cards[deckSize]; 
+	card cards[deckSize];
 };
