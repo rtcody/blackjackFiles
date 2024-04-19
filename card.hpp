@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <iostream>
@@ -11,35 +12,34 @@
 
 
 using std::string;
-using std::vector; 
-using std::cout; 
-using std::endl; 
-using std::ifstream; 
-using std::ios; 
+using std::vector;
+using std::cout;
+using std::endl;
+using std::ifstream;
+using std::ios;
 
 class card
 {
 public:
-	card(void); 
-	card(int value, char suit, string image); 
-	card(card& copy); 
+	card(void);
+	card(int value, char suit, string image);
+	card(card& copy);
 
-	int getValue(void); 
-	char getSuit(void);  
-	string getImage(void); 
+	int getValue(void);
+	char getSuit(void);
+	string getImage(void);
 
-	void setValue(int value); 
-	void setSuit(char suit); 
-	void setImage(string image); 
+	void setValue(int value);
+	void setSuit(char suit);
+	void setImage(string image);
 
 
-	void print(void); 
+	void print(void);
 
-	
 
 private:
-	int value; 
-	char suit; 
-	string image;      
-	
+	int value;
+	char suit;
+	string image;
+
 };
