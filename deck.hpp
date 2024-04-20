@@ -1,4 +1,3 @@
-
 #pragma once
 #include "card.hpp"
 
@@ -18,4 +17,6 @@ public:
 
 private:
 	card cards[deckSize];
+
 };
+
