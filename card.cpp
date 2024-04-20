@@ -1,4 +1,3 @@
-
 #include "card.hpp"
 
 card::card()
@@ -38,6 +37,16 @@ string card::getImage()
 	return image;
 }
 
+Texture& card::getTexture(void)
+{
+	return cardTexture; 
+}
+
+Sprite& card::getSprite(void)
+{
+	return cardSprite; 
+}
+
 void card::setValue(int value)
 {
 	this->value = value;
@@ -53,7 +62,17 @@ void card::setImage(string image)
 	this->image = image;
 }
 
+void card::setTexture(string textureReadInFromFile)
+{
+	cardTexture.loadFromFile(textureReadInFromFile);
+}
+
+void card::setSprite(Texture& cardTexture)
+{
+	cardSprite.setTexture(cardTexture); 
+}
+
 void card::print()
 {
-	cout << "Value: " << value << ", Suit: " << suit << endl;
+	cout << "Value: " << value << ", Suit: " << suit << endl; 
 }
