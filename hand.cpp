@@ -1,4 +1,3 @@
-
 #include "hand.hpp"
 
 //Joey working on hand
@@ -24,9 +23,10 @@ Hand::Hand(Deck& gameDeck)
 	/// </summary>
 	/// <returns>the total value of the hand</returns> not anymore
 void Hand::computeHandValue()
+
 {
 	int numAces = 0;
-
+	handValue = 0; 
 	for (int i = 0; i < cardCount; i++)
 	{
 		if (blackjackHand[i].getValue() != 1)
@@ -42,7 +42,7 @@ void Hand::computeHandValue()
 
 	for (int i = 0; i < numAces; i++)
 	{
-		if (handValue + 11 <= 21) //if ace being 11 wont have the hand bust, 11 is added to the value 
+		if ((handValue + 11) <= 21) //if ace being 11 wont have the hand bust, 11 is added to the value 
 		{
 			handValue += 11;
 		}
@@ -53,9 +53,11 @@ void Hand::computeHandValue()
 	}
 }
 
+
 int Hand::computeHandValue(card dummyHand[11])
 {
 	int newHandValue = 0, numAces = 0;
+
 
 	for (int i = 0; i < cardCount; i++)
 	{
@@ -69,6 +71,7 @@ int Hand::computeHandValue(card dummyHand[11])
 		}
 
 	}
+
 
 	for (int i = 0; i < numAces; i++)
 	{
@@ -108,15 +111,15 @@ void Hand::hit(Deck& gameDeck)
 
 card Hand::getCard(int index)
 {
+
 	return blackjackHand[index];
+
 }
 
 int Hand::getHandValue()
 {
+	computeHandValue();  
 	return handValue;
-}
-
-void Hand::displayHand()
-{
 
 }
+
