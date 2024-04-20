@@ -11,7 +11,7 @@ public:
 	{
 
 	}
-	void displayHand(sf::RenderWindow& window);
+	void displayHand(sf::RenderWindow& window, int x, int y); 
 
 
 };
