@@ -108,7 +108,7 @@ void Test::testDeckShuffle()
 *	Precondition: none
 *	Postcondition:none
 \******************************************************************************/
-void Test::testHandPopulation()
+void Test::testHandPopulation() 
 {
 	card compareCard;
 	Deck helperDeck;
