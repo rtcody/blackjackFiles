@@ -1,5 +1,5 @@
-
 #include "deck.hpp"
+
 
 Deck::Deck()
 {
@@ -7,6 +7,7 @@ Deck::Deck()
 	ifstream file;
 	file.open("deck.csv", ios::in);
 	string trash;
+	char tempChar = '\0';
 	getline(file, trash);
 
 	for (int i = 0; i < 52; i++)
@@ -15,7 +16,7 @@ Deck::Deck()
 		temp.setValue(stoi(trash));
 
 		getline(file, trash, ',');
-		temp.setSuit(trash[0]);
+		temp.setSuit(tempChar);
 
 		getline(file, trash);
 		temp.setImage(trash);
@@ -35,6 +36,7 @@ card* Deck::getCards()
 {
 	return cards;
 }
+
 
 card Deck::getCard(int index)
 {
