@@ -1,7 +1,5 @@
-
 #pragma once
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+
 #include "deck.hpp" 
 
 //Joey working on hand 
@@ -23,21 +21,24 @@ public:
 	int computeHandValue(card dummyHand[11]);
 	/// <summary>
 	/// adds a card to the blackjackHand
+	/// 
 	/// </summary>
 	/// <param name="gameDeck"></param>
 	void hit(Deck& gameDeck);
+
 	/// <summary>
 	/// virtual display hand (different for both player and dealer 
 	/// </summary>
-	virtual void displayHand();  
+	virtual void displayHand(sf::RenderWindow& window, int x, int y) = 0;
 
 	card getCard(int index);
 	int getHandValue();
 
 
-protected:
+protected: //changed to protected by Ben
 	card blackjackHand[11]; // 11 is the most cards you can have (All Aces) 
 	int cardCount; // used to ensure we do not go out of bounds in the array; 
 	int handValue; // total value of the hand 
 
 };
+
