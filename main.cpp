@@ -5,10 +5,10 @@
 #include "Dealer.hpp"
 #include "test.hpp"
 #include "Button.hpp"
-#include "Client.h"
 
-using sf::Texture;
-using sf::Sprite;
+//Joey - I dont have client or any server thing so I will just be commenting the server stuff out 
+//#include "Client.h"
+
 
 int main(void)
 {
@@ -31,11 +31,11 @@ int main(void)
 
     srand((unsigned int)time(NULL));
 
-     Test t;
-     t.runTests();
+    Test t;
+    t.runTests();
 
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "BLACKJACK"); 
-     
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "BLACKJACK");
+
     Texture b;
     b.loadFromFile("Cards/background.png");
 
@@ -52,15 +52,35 @@ int main(void)
 
     Deck gDeck;
     Player player(gDeck);
-    Dealer dealer(gDeck); 
+    Dealer dealer(gDeck);
 
+    //hit button creation 
     Texture HitTexture;
     HitTexture.loadFromFile("Cards/redHitButton.png");
     HitButton Hit(HitTexture);
 
-    bool playerHit = false;
+    //double down button creation 
+    Texture DDtexture;
+    DDtexture.loadFromFile("Cards/greenDoubleDown.png"); 
+    DoubleDownButton DoubleDown(DDtexture); 
 
- 
+    //stand button creation 
+    Texture standTexture; 
+    standTexture.loadFromFile("Cards/StandButton.png");
+    StandButton Stand(standTexture);  
+
+    //split button creation
+    Texture splitTexture; 
+    splitTexture.loadFromFile("Cards/greySplitButton.png");
+    SplitButton Split(splitTexture); 
+
+    Sprite card3forDD; 
+
+    bool canHit = true;
+    bool isAbleToSplit = false; // bool to identify if player is able to split 
+    bool didDoubleDown = false; 
+
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -74,35 +94,82 @@ int main(void)
             {
                 if (event.mouseButton.button == sf::Mouse::Left) //check left mouse button is pressed
                 {
-                    sf::Vector2i mousePosition = sf::Mouse::getPosition(window); 
-                    if (Hit.getGlobalBounds().contains(mousePosition.x, mousePosition.y) && player.getCard(10).getImage() == "\0") //if mouse is clicked the hit buttton
+                    sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+
+                    if (Hit.getGlobalBounds().contains(mousePosition.x, mousePosition.y)    //if mouse is clicked the hit buttton
+                        && player.getHandValue() < 21 // and value is less than 21 (player can hit)
+                        && canHit == true)   // player did not double down 
                     {
-                        playerHit = true;
-                        player.hit(gDeck);  
+                 
+                        player.hit(gDeck);
                     }
+
+                    if (player.getHandValue() >= 21) // if cannot hit anymore 
+                    {
+                        HitTexture.loadFromFile("Cards/greyHitButton.png");
+                        Hit.setTexture(HitTexture);
+                    }
+
+                    if (DoubleDown.getGlobalBounds().contains(mousePosition.x, mousePosition.y) // if on first two cards can double down 
+                        && player.getCard(2).getImage() == "\0")
+                    {
+                        canHit = player.DoubleDown(gDeck);   // can hit set to false 
+                        player.getCard(2);
+                        didDoubleDown = true; // will be used to rotate card because after a double down you cant hit 
+
+                    }
+
+                  
+
+                  
+                }
+
+                if (player.getCard(2).getImage() != "\0") // if player cannot double down anymore change sprite immage 
+                {
+                    DDtexture.loadFromFile("Cards/greyDoubleDown.png");
+                    DoubleDown.setTexture(DDtexture);
+
                 }
             }
 
+            if (player.canSplit() && player.getCard(2).getImage() == "\0")   // if first two cards have the same value (can split)
+            {
+                splitTexture.loadFromFile("Cards/splitButton.png");
+                Split.setTexture(splitTexture);
+            }
+            else // cannot split 
+            {
+                splitTexture.loadFromFile("Cards/greySplitButton.png");
+                Split.setTexture(splitTexture);
+            }
+
+            if (player.getHandValue() >= 21 || canHit == false) // cannot hit anymore 
+            {
+                HitTexture.loadFromFile("Cards/greyHitButton.png");
+                Hit.setTexture(HitTexture);
+            }
+
+            if (didDoubleDown == true)
+            {
+                player.getCard(2).getSprite().setRotation(90); 
+            }
+            
         }
 
-        if (player.canSplit())
-        {
-            //button for if the player chose to split
-
-
-        }
-
-
-
+       
         window.clear();
         window.draw(background);
-        window.draw(Hit); 
-        dealer.displayHand(window); 
-        window.draw(backCard); 
-        player.displayHand(window); 
+        //buttons drawn
+        window.draw(Hit);
+        window.draw(DoubleDown); 
+        window.draw(Stand); 
+        window.draw(Split); 
+
+        dealer.displayHand(window, 950,50); 
+        window.draw(backCard);
+        player.displayHand(window,820,800);
         window.display();
-   
+
     }
     return 0;
 }
-
