@@ -23,24 +23,27 @@ class card
 {
 public:
 	card(void);
-	card(int value, char suit, string image);
+	card(int cardCum, int value, char suit, string image);
 	card(card& copy);
 
+	int getCardNum();
 	int getValue(void);
 	char getSuit(void);
 	string getImage(void);
 	Texture& getTexture(void);
-	Sprite& getSprite(void); 
+	Sprite& getSprite(void);
 
+	void setCardNum(int cardNum);
 	void setValue(int value);
 	void setSuit(char suit);
 	void setImage(string image);
 	void setTexture(string textureReadInFromFile);
-	void setSprite(Texture &cardTexture);
+	void setSprite(Texture& cardTexture);
 
 	void print(void);
 
 private:
+	int cardNum;
 	int value;
 	char suit;
 	string image;
@@ -48,4 +51,3 @@ private:
 	Texture cardTexture;
 
 };
-
