@@ -1,3 +1,4 @@
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "hand.hpp"
@@ -61,24 +62,25 @@ int main(void)
 
     //double down button creation 
     Texture DDtexture;
-    DDtexture.loadFromFile("Cards/greenDoubleDown.png"); 
-    DoubleDownButton DoubleDown(DDtexture); 
+    DDtexture.loadFromFile("Cards/greenDoubleDown.png");
+    DoubleDownButton DoubleDown(DDtexture);
 
     //stand button creation 
-    Texture standTexture; 
+    Texture standTexture;
     standTexture.loadFromFile("Cards/StandButton.png");
-    StandButton Stand(standTexture);  
+    StandButton Stand(standTexture);
 
     //split button creation
-    Texture splitTexture; 
+    Texture splitTexture;
     splitTexture.loadFromFile("Cards/greySplitButton.png");
-    SplitButton Split(splitTexture); 
+    SplitButton Split(splitTexture);
 
-    Sprite card3forDD; 
+    Sprite card3forDD;
 
     bool canHit = true;
     bool isAbleToSplit = false; // bool to identify if player is able to split 
-    bool didDoubleDown = false; 
+    bool didDoubleDown = false;
+    bool flip = false; // for the back card  
 
 
     while (window.isOpen())
@@ -100,14 +102,9 @@ int main(void)
                         && player.getHandValue() < 21 // and value is less than 21 (player can hit)
                         && canHit == true)   // player did not double down 
                     {
-                 
-                        player.hit(gDeck);
-                    }
 
-                    if (player.getHandValue() >= 21) // if cannot hit anymore 
-                    {
-                        HitTexture.loadFromFile("Cards/greyHitButton.png");
-                        Hit.setTexture(HitTexture);
+                        player.hit(gDeck);
+        
                     }
 
                     if (DoubleDown.getGlobalBounds().contains(mousePosition.x, mousePosition.y) // if on first two cards can double down 
@@ -116,19 +113,21 @@ int main(void)
                         canHit = player.DoubleDown(gDeck);   // can hit set to false 
                         player.getCard(2);
                         didDoubleDown = true; // will be used to rotate card because after a double down you cant hit 
-
+                        flip = true;
                     }
 
-                  
+                    if (Split.getGlobalBounds().contains(mousePosition.x, mousePosition.y))
+                    {
+                        if (player.canSplit() && player.getCard(2).getImage() == "\0")
+                        {
 
-                  
-                }
+                        }
+                    }
 
-                if (player.getCard(2).getImage() != "\0") // if player cannot double down anymore change sprite immage 
-                {
-                    DDtexture.loadFromFile("Cards/greyDoubleDown.png");
-                    DoubleDown.setTexture(DDtexture);
-
+                    if (Stand.getGlobalBounds().contains(mousePosition.x, mousePosition.y))
+                    {
+                        flip = true;
+                    }
                 }
             }
 
@@ -147,29 +146,38 @@ int main(void)
             {
                 HitTexture.loadFromFile("Cards/greyHitButton.png");
                 Hit.setTexture(HitTexture);
+                flip = true; 
+            }
+
+            if (player.getCard(2).getImage() != "\0") // if player cannot double down anymore change sprite immage 
+            {
+                DDtexture.loadFromFile("Cards/greyDoubleDown.png");
+                DoubleDown.setTexture(DDtexture);
+
             }
 
             if (didDoubleDown == true)
             {
-                player.getCard(2).getSprite().setRotation(90); 
+                player.getCard(2).getSprite().setRotation(90);
+          
             }
-            
         }
 
-       
         window.clear();
         window.draw(background);
         //buttons drawn
         window.draw(Hit);
-        window.draw(DoubleDown); 
-        window.draw(Stand); 
-        window.draw(Split); 
-
-        dealer.displayHand(window, 950,50); 
-        window.draw(backCard);
-        player.displayHand(window,820,800);
+        window.draw(DoubleDown);
+        window.draw(Stand);
+        window.draw(Split);
+       
+        dealer.displayHand(window, 950, 50);
+        if (flip == false) 
+        {
+            window.draw(backCard);
+        }
+        player.displayHand(window, 820, 800);
         window.display();
-
     }
     return 0;
 }
