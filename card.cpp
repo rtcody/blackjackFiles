@@ -2,24 +2,31 @@
 
 card::card()
 {
+	this->cardNum = 0;
 	this->value = 0;
 	this->suit = '\0';
 	this->image = "\0";
 }
 
-card::card(int value, char suit, string image)
+card::card(int cardNum, int value, char suit, string image)
 {
+	this->cardNum = cardNum;
 	this->value = value;
 	this->suit = suit;
 	this->image = image;
-	//createSprite();
 }
 
 card::card(card& copy)
 {
+	this->cardNum = copy.cardNum;
 	this->value = copy.value;
 	this->suit = copy.suit;
 	this->image = copy.image;
+}
+
+int card::getCardNum()
+{
+	return cardNum;
 }
 
 int card::getValue()
@@ -39,12 +46,17 @@ string card::getImage()
 
 Texture& card::getTexture(void)
 {
-	return cardTexture; 
+	return cardTexture;
 }
 
 Sprite& card::getSprite(void)
 {
-	return cardSprite; 
+	return cardSprite;
+}
+
+void card::setCardNum(int cardNum)
+{
+	this->cardNum = cardNum;
 }
 
 void card::setValue(int value)
@@ -69,10 +81,10 @@ void card::setTexture(string textureReadInFromFile)
 
 void card::setSprite(Texture& cardTexture)
 {
-	cardSprite.setTexture(cardTexture); 
+	cardSprite.setTexture(cardTexture);
 }
 
 void card::print()
 {
-	cout << "Value: " << value << ", Suit: " << suit << endl; 
+	cout << "Value: " << value << ", Suit: " << suit << endl;
 }
