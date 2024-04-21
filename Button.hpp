@@ -1,7 +1,7 @@
 #pragma once
 #include "hand.hpp"
 
-class Button : public sf::Sprite 
+class Button : public sf::Sprite
 {
 public:
 	Button(sf::Texture& buttonTexture);
@@ -12,7 +12,7 @@ public:
 
 class HitButton : public Button
 {
-public: 
+public:
 	HitButton(sf::Texture& buttonText) : Button(buttonText)
 	{
 		this->setPosition(1500, 300);
@@ -29,7 +29,7 @@ public:
 		this->setPosition(1700, 300);
 		this->setScale(8.0f, 8.0f);
 	}
-private: 
+private:
 };
 
 class SplitButton : public Button
