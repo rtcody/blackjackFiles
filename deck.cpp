@@ -13,6 +13,9 @@ Deck::Deck()
 	for (int i = 0; i < 52; i++)
 	{
 		getline(file, trash, ',');
+		temp.setCardNum(stoi(trash));
+
+		getline(file, trash, ',');
 		temp.setValue(stoi(trash));
 
 		getline(file, trash, ',');
@@ -21,9 +24,8 @@ Deck::Deck()
 		getline(file, trash);
 		temp.setImage(trash);
 
+
 		cards[i] = temp;
-
-
 	}
 }
 
