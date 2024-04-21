@@ -26,7 +26,7 @@ void Hand::computeHandValue()
 
 {
 	int numAces = 0;
-	handValue = 0; 
+	handValue = 0;
 	for (int i = 0; i < cardCount; i++)
 	{
 		if (blackjackHand[i].getValue() != 1)
@@ -118,8 +118,7 @@ card Hand::getCard(int index)
 
 int Hand::getHandValue()
 {
-	computeHandValue();  
+	computeHandValue();
 	return handValue;
 
 }
-
