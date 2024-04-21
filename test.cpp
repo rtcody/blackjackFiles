@@ -33,6 +33,10 @@ void Test::testDeckCreation()
 
 	//create the first card
 	getline(file, trash);
+
+	getline(file, trash, ',');
+	firstCard.setCardNum(stoi(trash)); 
+
 	getline(file, trash, ',');
 	firstCard.setValue(stoi(trash));
 
@@ -49,6 +53,9 @@ void Test::testDeckCreation()
 	}
 
 	//create the last card
+	getline(file, trash, ',');
+	lastCard.setCardNum(stoi(trash));
+
 	getline(file, trash, ',');
 	lastCard.setValue(stoi(trash));
 
@@ -108,7 +115,7 @@ void Test::testDeckShuffle()
 *	Precondition: none
 *	Postcondition:none
 \******************************************************************************/
-void Test::testHandPopulation() 
+void Test::testHandPopulation()
 {
 	card compareCard;
 	Deck helperDeck;
