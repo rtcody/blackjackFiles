@@ -29,7 +29,7 @@ public:
 	/// <summary>
 	/// virtual display hand (different for both player and dealer 
 	/// </summary>
-	virtual void displayHand(sf::RenderWindow& window, int x, int y) = 0;
+	virtual void displayHand(sf::RenderWindow& window, int x, int y, bool didDoubleD) = 0;
 
 	card getCard(int index);
 	int getHandValue();
