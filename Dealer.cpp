@@ -1,10 +1,10 @@
 #include "Dealer.hpp"
 
 
-void Dealer::displayHand(sf::RenderWindow& window, int x, int y)
+void Dealer::displayHand(sf::RenderWindow& window, int x, int y, bool didDoubleD)  // didDoubleD does nothing here but needed for polymorphism
 
 {
-
+   
     for (int i = 0; i < cardCount; i++)
     {
         //get the texture for the current card
