@@ -1,7 +1,7 @@
 #include "Player.hpp"
 
 
-void Player::displayHand(sf::RenderWindow& window, int x, int y)
+void Player::displayHand(sf::RenderWindow& window, int x, int y, bool didDoubleD)
 {
 
 
@@ -19,6 +19,15 @@ void Player::displayHand(sf::RenderWindow& window, int x, int y)
 
         //set position the card
         blackjackHand[i].getSprite().setPosition(x, y);
+
+       
+        if (i == 2 && didDoubleD == true) 
+        {
+            blackjackHand[i].getSprite().setPosition(800, 800);
+            blackjackHand[i].getSprite().rotate(90); 
+           
+        }
+
 
         //draw the card to the window
         window.draw(blackjackHand[i].getSprite());
