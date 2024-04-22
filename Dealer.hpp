@@ -11,7 +11,8 @@ public:
 	{
 
 	}
-	void displayHand(sf::RenderWindow& window, int x, int y);
+	void displayHand(sf::RenderWindow& window, int x, int y, bool didDoubleD); 
 
 
 };
+
