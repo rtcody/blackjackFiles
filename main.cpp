@@ -75,12 +75,17 @@ int main(void)
     splitTexture.loadFromFile("Cards/greySplitButton.png");
     SplitButton Split(splitTexture);
 
-    Sprite card3forDD;
+    //outcome sprite (win/loss/tie)
+    Texture outcomeTexture;  
+    outcomeTexture.loadFromFile("Cards/loser.png");
+    Sprite outcome(outcomeTexture);  
+
 
     bool canHit = true;
     bool isAbleToSplit = false; // bool to identify if player is able to split 
     bool didDoubleDown = false;
     bool flip = false; // for the back card  
+    bool didPlayerWin = false; 
 
 
     while (window.isOpen())
@@ -104,14 +109,14 @@ int main(void)
                     {
 
                         player.hit(gDeck);
-        
+
                     }
 
                     if (DoubleDown.getGlobalBounds().contains(mousePosition.x, mousePosition.y) // if on first two cards can double down 
                         && player.getCard(2).getImage() == "\0")
                     {
                         canHit = player.DoubleDown(gDeck);   // can hit set to false 
-                        player.getCard(2);
+                       player.getCard(2).getSprite().rotate(90.f); 
                         didDoubleDown = true; // will be used to rotate card because after a double down you cant hit 
                         flip = true;
                     }
@@ -127,6 +132,7 @@ int main(void)
                     if (Stand.getGlobalBounds().contains(mousePosition.x, mousePosition.y))
                     {
                         flip = true;
+                        canHit = false; 
                     }
                 }
             }
@@ -142,25 +148,29 @@ int main(void)
                 Split.setTexture(splitTexture);
             }
 
+
             if (player.getHandValue() >= 21 || canHit == false) // cannot hit anymore 
             {
                 HitTexture.loadFromFile("Cards/greyHitButton.png");
                 Hit.setTexture(HitTexture);
-                flip = true; 
+                flip = true;
             }
 
-            if (player.getCard(2).getImage() != "\0") // if player cannot double down anymore change sprite immage 
+            if (player.getCard(2).getImage() != "\0" || canHit == false) // if player cannot double down anymore change sprite immage 
             {
                 DDtexture.loadFromFile("Cards/greyDoubleDown.png");
                 DoubleDown.setTexture(DDtexture);
 
             }
 
+
             if (didDoubleDown == true)
             {
                 player.getCard(2).getSprite().setRotation(90);
-          
+
             }
+
+           
         }
 
         window.clear();
@@ -170,13 +180,49 @@ int main(void)
         window.draw(DoubleDown);
         window.draw(Stand);
         window.draw(Split);
-       
-        dealer.displayHand(window, 950, 50);
-        if (flip == false) 
+
+        dealer.displayHand(window, 950, 50,didDoubleDown);
+        if (flip == false)
         {
             window.draw(backCard);
         }
-        player.displayHand(window, 820, 800);
+       
+        player.displayHand(window, 820, 800, didDoubleDown);
+        didDoubleDown = false; 
+
+        if (canHit == false || didDoubleDown == true) // player cannot do anything anymore so now for calculations
+        {
+            standTexture.loadFromFile("Cards/greyStandButton.png");
+            Stand.setTexture(standTexture);
+
+            //winner and loser logic 
+            if (player.getHandValue() > dealer.getHandValue() && 21 > dealer.getHandValue() && player.getHandValue() <= 21)  // player won 
+            {
+                outcomeTexture.loadFromFile("Cards/win.png");
+
+            }
+            else if (player.getHandValue() > dealer.getHandValue() && 21 < dealer.getHandValue() && player.getHandValue() <= 21) // dealer busted 
+            {
+                outcomeTexture.loadFromFile("Cards/dealerBust.png");
+            }
+            else if (player.getHandValue() < dealer.getHandValue() && 21 < player.getHandValue() && dealer.getHandValue() <= 21) // player bust 
+            {
+                outcomeTexture.loadFromFile("Cards/bust.png");
+            }
+            else if (player.getHandValue() < dealer.getHandValue() && 21 > player.getHandValue() && dealer.getHandValue() <=21) // dealer wins
+            {
+                outcomeTexture.loadFromFile("Cards/loser.png");
+            }
+            else if (player.getHandValue() == dealer.getHandValue() && player.getHandValue() <= 21)
+            {
+                outcomeTexture.loadFromFile("Cards/push.png");
+            }
+            outcome.setTexture(outcomeTexture);
+            outcome.setScale(8.0f, 8.0f);
+            outcome.setPosition(1360, 740);
+            window.draw(outcome);
+        }
+        
         window.display();
     }
     return 0;
