@@ -6,7 +6,7 @@
 class Player : public Hand
 {
 public:
-	
+
 	Player(Deck& gDeck) : Hand(gDeck) //initialized the players hands from the deck
 	{
 		bankAmount = 0;
@@ -14,7 +14,7 @@ public:
 	}
 
 
-	void displayHand(sf::RenderWindow& window, int x, int y);
+	void displayHand(sf::RenderWindow& window, int x, int y, bool didDoubleD);
 
 	/// <summary>
 	/// dictates weather the player can split their hand or not
@@ -25,7 +25,7 @@ public:
 	bool DoubleDown(Deck& gameDeck);
 
 
-	Player* split(); 
+	Player* split();
 
 	bool canBet();
 
