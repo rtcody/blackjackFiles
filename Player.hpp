@@ -25,7 +25,7 @@ public:
 
 	Player* split();
 
-	bool canBet();
+	bool canBet(int potBet);    
 
 	void setBet(int betAmount);
 
