@@ -1,9 +1,8 @@
-
 #include "hand.hpp"
 
 //Ben working on display for player
 
-class Player : public Hand
+class Player : public Hand      
 {
 public:
 
@@ -12,7 +11,6 @@ public:
 		bankAmount = 0;
 		betAmount = 0;
 	}
-
 
 	void displayHand(sf::RenderWindow& window, int x, int y, bool didDoubleD);
 
@@ -40,6 +38,15 @@ public:
 	void betPayout(void);
 	void betLoser(void);
 	void betBlackJack(void);
+
+	string createWinMes(void); 
+	string createLossMes(void); 
+	string createBetAmount(void); 
+	string createBankAmount(void); 
+	string createHitMes(void); 
+
+
+	string playerStood = "Player stood.", playerDD = "Player doubled down.", playerDraw = "Player and Dealer drew.", playerSplit = "Player split"; 
 
 private:
 	int bankAmount;
