@@ -11,8 +11,8 @@ public:
 	{
 
 	}
-	void displayHand(sf::RenderWindow& window, int x, int y, bool didDoubleD); 
+	void displayHand(sf::RenderWindow& window, int x, int y, bool didDoubleD);
+	void dealerAI(Deck& gDeck);
 
 
 };
-
