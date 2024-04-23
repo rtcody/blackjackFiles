@@ -53,3 +53,53 @@ public:
 	}
 private:
 };
+
+class oneButton : public Button
+{
+public:
+	oneButton(sf::Texture& oneTexture) : Button(oneTexture)
+	{
+		this->setPosition(50, 15); 
+		this->setScale(4.0f, 4.0f); 
+	}
+}; 
+
+class fiveButton : public Button
+{
+public:
+	fiveButton(sf::Texture& fiveTexture) : Button(fiveTexture)
+	{
+		this->setPosition(30, 100); 
+		this->setScale(5.0f, 5.0f);  
+	}
+};
+
+class twentyFiveButton : public Button
+{
+public:
+	twentyFiveButton(sf::Texture& twentyFiveTexture) : Button(twentyFiveTexture)
+	{
+		this->setPosition(50, 250);
+		this->setScale(4.0f, 4.0f); 
+	}
+};
+
+class oneHundredButton : public Button
+{
+public:
+	oneHundredButton(sf::Texture& oneHundredTexture) : Button(oneHundredTexture)
+	{
+		this->setPosition(50, 350); 
+		this->setScale(4.0f, 4.0f); 
+	}
+};
+
+class doneButton : public Button
+{
+public:
+	doneButton(sf::Texture& doneTexture) : Button(doneTexture)
+	{
+		this->setPosition(175, 30); 
+		this->setScale(2.75f, 2.75f); 
+	}
+};
