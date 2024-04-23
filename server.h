@@ -1,26 +1,21 @@
 #pragma once
-#define _WINSOCK_DEPRECATED_NO_WARNINGS     
+#define _WINSOCK_DEPRECATED_NO_WARNINGS   
 #pragma comment(lib, "WS2_32.lib")
 #include <iostream>
+#include <fstream>
 #include <cstring>
 #include <winsock2.h>
-#include <thread> // Include for threading support
+#include <thread> // Include for threading support 
 
-using std::cin; 
-using std::cout; 
-using std::string; 
-using std::cerr;  
+using std::string;
 
-void initializeSocket(WSADATA& wsaData);
-
+void initializeWSA(WSADATA& wsaData);
 void createSocket(SOCKET& serverSocket);
+void bindIPAddr(sockaddr_in& serverAddr, SOCKET& serverSocket);
+void listen(SOCKET& serverSocket);
+SOCKET acceptCommunications(SOCKET& serverSocket);
+string recieveData(SOCKET& serverSocket, SOCKET& clientSocket); 
+void closeSocket(SOCKET& serverSocket, SOCKET& clientSocket);
 
-void bindSocket(sockaddr_in& serverAddr, SOCKET& serverSocket);
+void writeToFile(std::ofstream& file, string message);
 
-void listen(SOCKET& serverSocket); 
-
-SOCKET acceptConnection(SOCKET& serverSocket);
-
-void recieveData(SOCKET& clientSocket, SOCKET& serverSocket); 
-
-void closeServer(SOCKET& serverSocket); 
