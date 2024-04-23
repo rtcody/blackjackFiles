@@ -1,14 +1,15 @@
 #pragma once
-#include "card.hpp"
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #pragma comment(lib, "WS2_32.lib")
+#include <iostream>
 #include <cstring> 
+#include <string>
 #include <winsock2.h>
 using std::cin;
 using std::cout;
 using std::string;
 
-void initializeSocket(WSADATA& wsaData);
+void initializeSocket(WSADATA& wsaData); 
 
 void createSocket(SOCKET& clientSocket);
 
