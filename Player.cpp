@@ -20,12 +20,12 @@ void Player::displayHand(sf::RenderWindow& window, int x, int y, bool didDoubleD
         //set position the card
         blackjackHand[i].getSprite().setPosition(x, y);
 
-       
-        if (i == 2 && didDoubleD == true) 
+
+        if (i == 2 && didDoubleD == true)
         {
             blackjackHand[i].getSprite().setPosition(800, 800);
-            blackjackHand[i].getSprite().rotate(90); 
-           
+            blackjackHand[i].getSprite().rotate(90);
+
         }
 
 
@@ -79,7 +79,10 @@ bool Player::canBet()
 
 void Player::setBet(int betAmount)
 {
-    this->betAmount = betAmount;
+    if (canBet())
+    {
+        this->betAmount = betAmount;
+    }
 }
 
 void Player::setBank(int bankAmount)
@@ -89,7 +92,9 @@ void Player::setBank(int bankAmount)
 
 int Player::getBank()
 {
-    return bankAmount;
+    {
+        return bankAmount;
+    }
 }
 
 int Player::getBet()
@@ -137,4 +142,39 @@ Player* Player::split()
     Player twoHands[2] = { player1, player2 };
 
     return twoHands;
+}
+
+string Player::createWinMes(void)
+{
+    string message = "Player won ", intAm;  
+    message.append(std::to_string(betAmount));  
+    message.append("!"); 
+
+    return message; 
+}
+
+string Player::createLossMes(void)
+{
+    string message = "Player won ", intAm;
+    message.append(std::to_string(betAmount));  
+    message.append("!"); 
+     
+    return message; 
+}
+
+string Player::createBetAmount(void)
+{
+    string message = "Player bets", intAm; 
+    message.append(std::to_string(betAmount));     
+
+    return message;   
+}
+
+string Player::createBankAmount(void)
+{
+    string message = "Player has ", intAm;
+    message.append(std::to_string(bankAmount));
+    message.append(" in the bank!"); 
+
+    return message; 
 }
