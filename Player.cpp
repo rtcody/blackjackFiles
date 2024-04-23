@@ -72,14 +72,14 @@ bool Player::DoubleDown(Deck& gameDeck)
     return false; // will always return false 
 }
 
-bool Player::canBet()
+bool Player::canBet(int potBet)
 {
-    return betAmount <= bankAmount;
+    return potBet <= bankAmount;
 }
 
 void Player::setBet(int betAmount)
 {
-    if (canBet())
+    if (canBet(betAmount))  
     {
         this->betAmount = betAmount;
     }
@@ -155,16 +155,15 @@ string Player::createWinMes(void)
 
 string Player::createLossMes(void)
 {
-    string message = "Player won ", intAm;
+    string message = "Player lost ", intAm;
     message.append(std::to_string(betAmount));  
-    message.append("!"); 
      
     return message; 
 }
 
 string Player::createBetAmount(void)
 {
-    string message = "Player bets", intAm; 
+    string message = "Player bets ", intAm; 
     message.append(std::to_string(betAmount));     
 
     return message;   
