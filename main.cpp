@@ -1,4 +1,3 @@
-
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "hand.hpp"
@@ -15,16 +14,14 @@
 
 int main(void)
 {
+
     //WSADATA wsaData;
     //SOCKET clientSocket;
     //sockaddr_in serverAddr;
 
     //initCreateConnect(wsaData, clientSocket, serverAddr);
-
-    //string message;
-
-    //// Prompt user for input
-    //message = promptForInput();
+    //
+    //string message = player.createBankAmount();          
 
     //// Send user input to server
     //sendToServer(message, clientSocket);
@@ -32,10 +29,15 @@ int main(void)
     //// Close socket
     //closeSocket(clientSocket);
 
-    srand((unsigned int)time(NULL));
 
-    Test t;
-    t.runTests();
+    //  Test t;
+    //t.runTests(); 
+    srand((unsigned int)time(NULL));
+    Deck gDeck; 
+    Player player(gDeck);  
+    Dealer dealer(gDeck); 
+
+    player.setBank(200);  
 
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "BLACKJACK");
 
@@ -53,9 +55,6 @@ int main(void)
     backCard.setScale(0.26f, 0.26f);
     backCard.setPosition(950, 50);
 
-    Deck gDeck;
-    Player player(gDeck);
-    Dealer dealer(gDeck);
 
     //hit button creation 
     Texture HitTexture;
@@ -82,16 +81,42 @@ int main(void)
     outcomeTexture.loadFromFile("Cards/loser.png");
     Sprite outcome(outcomeTexture);
 
+    //one dollar bet button
+    Texture oneDollarText;
+    oneDollarText.loadFromFile("Cards/oneDollar.png");
+    oneButton oneDollar(oneDollarText);     
 
+    //five dollar bet button 
+    Texture fiveDollarText; 
+    fiveDollarText.loadFromFile("Cards/fiveDollar.png"); 
+    fiveButton fiveDollar(fiveDollarText);    
+
+    //twenty five bet button
+    Texture twentyFiveText; 
+    twentyFiveText.loadFromFile("Cards/twentyFiveDollar.png"); 
+    twentyFiveButton twentyFiveDollar(twentyFiveText); 
+
+    //one hundred bet button
+    Texture oneHundText; 
+    oneHundText.loadFromFile("Cards/oneHundredDollar.png"); 
+    oneHundredButton oneHundredDollar(oneHundText); 
+
+    //done betting button 
+    Texture doneText; 
+    doneText.loadFromFile("Cards/doneBetting.png"); 
+    doneButton done(doneText);  
+
+    bool betting = true; 
     bool canHit = true;
     bool isAbleToSplit = false; // bool to identify if player is able to split 
     bool didDoubleDown = false;
     bool flip = false; // for the back card  
     bool didPlayerWin = false;
-    bool dealerAICalled = false; 
+    bool dealerAICalled = false;
 
     while (window.isOpen())
     {
+        window.display(); 
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -105,18 +130,46 @@ int main(void)
                 {
                     sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 
+                    if (oneDollar.getGlobalBounds().contains(mousePosition.x, mousePosition.y) && betting == true)
+                    {
+                        player.setBet(player.getBet() + 1);   
+                    }
+
+                    if (fiveDollar.getGlobalBounds().contains(mousePosition.x, mousePosition.y) && betting == true)
+                    {
+                        player.setBet(player.getBet() + 5); 
+                    }
+
+                    if (twentyFiveDollar.getGlobalBounds().contains(mousePosition.x, mousePosition.y) && betting == true)
+                    {
+                        player.setBet(player.getBet() + 25);    
+                    }
+
+                    if (oneHundredDollar.getGlobalBounds().contains(mousePosition.x, mousePosition.y) && betting == true)
+                    {
+                        player.setBet(player.getBet() + 100);
+                    }
+
+                    if (done.getGlobalBounds().contains(mousePosition.x, mousePosition.y))
+                    {
+                        betting = false;   
+                        cout << player.getBet() << endl << "Betting is over" << endl;  
+                    }
+
                     if (Hit.getGlobalBounds().contains(mousePosition.x, mousePosition.y)    //if mouse is clicked the hit buttton
                         && player.getHandValue() < 21 // and value is less than 21 (player can hit)
-                        && canHit == true)   // player did not double down 
+                        && canHit == true
+                        && betting == false)   // player did not double down 
                     {
 
                         player.hit(gDeck);
-            
+
 
                     }
 
                     if (DoubleDown.getGlobalBounds().contains(mousePosition.x, mousePosition.y) // if on first two cards can double down 
-                        && player.getCard(2).getImage() == "\0")
+                        && player.getCard(2).getImage() == "\0"
+                        && betting == false)
                     {
                         canHit = player.DoubleDown(gDeck);   // can hit set to false 
                         player.getCard(2).getSprite().rotate(90.f);
@@ -124,7 +177,8 @@ int main(void)
                         flip = true;
                     }
 
-                    if (Split.getGlobalBounds().contains(mousePosition.x, mousePosition.y))
+                    if (Split.getGlobalBounds().contains(mousePosition.x, mousePosition.y)
+                        && betting == false)
                     {
                         if (player.canSplit() && player.getCard(2).getImage() == "\0")
                         {
@@ -132,14 +186,14 @@ int main(void)
                         }
                     }
 
-                    if (Stand.getGlobalBounds().contains(mousePosition.x, mousePosition.y))
+                    if (Stand.getGlobalBounds().contains(mousePosition.x, mousePosition.y) && betting == false)  
                     {
                         flip = true;
                         canHit = false;
                     }
                 }
             }
-   
+
             if (player.canSplit() && player.getCard(2).getImage() == "\0")   // if first two cards have the same value (can split)
             {
                 splitTexture.loadFromFile("Cards/splitButton.png");
@@ -149,7 +203,7 @@ int main(void)
             {
                 splitTexture.loadFromFile("Cards/greySplitButton.png");
                 Split.setTexture(splitTexture);
-          
+
             }
 
 
@@ -169,7 +223,7 @@ int main(void)
 
             }
         }
-        
+
 
         window.clear();
         window.draw(background);
@@ -178,9 +232,14 @@ int main(void)
         window.draw(DoubleDown);
         window.draw(Stand);
         window.draw(Split);
-     
-       
-     
+        window.draw(oneDollar); 
+        window.draw(fiveDollar);   
+        window.draw(twentyFiveDollar);  
+        window.draw(oneHundredDollar); 
+        window.draw(done); 
+
+
+
 
         dealer.displayHand(window, 950, 50, didDoubleDown);
         if (flip == false)
@@ -190,9 +249,9 @@ int main(void)
         }
 
         player.displayHand(window, 820, 800, didDoubleDown);
-        didDoubleDown = false; 
+        didDoubleDown = false;
 
-       
+
         if (canHit == false || didDoubleDown == true) // player cannot do anything anymore so now for calculations
         {
             if (dealerAICalled == false)
@@ -210,21 +269,30 @@ int main(void)
                 if ((player.getHandValue() > dealer.getHandValue()) && (21 > dealer.getHandValue()) && (player.getHandValue() <= 21))  // player won 
                 {
                     outcomeTexture.loadFromFile("Cards/win.png");
-
+                    player.betPayout(); 
                 }
                 else if ((21 < dealer.getHandValue()) && (player.getHandValue() <= 21)) // dealer busted 
                 {
                     outcomeTexture.loadFromFile("Cards/dealerBust.png");
+                    player.betPayout();
                 }
                 else if ((player.getHandValue() < dealer.getHandValue()) && (21 < player.getHandValue()) && (dealer.getHandValue() <= 21)) // player bust 
                 {
                     outcomeTexture.loadFromFile("Cards/bust.png");
+                    player.betLoser(); 
+  
                 }
                 else if (((player.getHandValue() < dealer.getHandValue()) && (21 > player.getHandValue())) && (dealer.getHandValue() <= 21)) // dealer wins
                 {
                     outcomeTexture.loadFromFile("Cards/loser.png");
+                    player.betLoser();   
                 }
-                else if (player.getHandValue() == dealer.getHandValue() && player.getHandValue() <= 21)
+                else if (player.getHandValue() == 21 && (player.getHandValue() > dealer.getHandValue() || dealer.getHandValue() < 21)) //blackjack wins
+                {
+                    outcomeTexture.loadFromFile("Cards/win.png");  
+                    player.betBlackJack();  
+                }
+                else if(player.getHandValue() == dealer.getHandValue() && player.getHandValue() <= 21)
                 {
                     outcomeTexture.loadFromFile("Cards/push.png");
                 }
