@@ -14,14 +14,16 @@
 
 int main(void)
 {
-
+    
     //WSADATA wsaData;
     //SOCKET clientSocket;
     //sockaddr_in serverAddr;
 
-    //initCreateConnect(wsaData, clientSocket, serverAddr);
-    //
-    //string message = player.createBankAmount();          
+    //initializeSocket(wsaData);  
+    //createSocket(clientSocket); 
+    //connectToServer(serverAddr, clientSocket); 
+
+    //string message = player.createBankAmount(); 
 
     //// Send user input to server
     //sendToServer(message, clientSocket);
@@ -30,13 +32,14 @@ int main(void)
     //closeSocket(clientSocket);
 
 
-    //  Test t;
-    //t.runTests(); 
+
+    ////  Test t;
+    ////t.runTests(); 
+
     srand((unsigned int)time(NULL));
     Deck gDeck; 
     Player player(gDeck);  
     Dealer dealer(gDeck); 
-
     player.setBank(200);  
 
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "BLACKJACK");
@@ -113,6 +116,7 @@ int main(void)
     bool flip = false; // for the back card  
     bool didPlayerWin = false;
     bool dealerAICalled = false;
+    bool outcomeDecided = false; 
 
     while (window.isOpen())
     {
@@ -132,28 +136,40 @@ int main(void)
 
                     if (oneDollar.getGlobalBounds().contains(mousePosition.x, mousePosition.y) && betting == true)
                     {
-                        player.setBet(player.getBet() + 1);   
+                        if (player.canBet(player.getBet()+1))
+                        {
+                            player.setBet(player.getBet() + 1);
+                        }
                     }
 
                     if (fiveDollar.getGlobalBounds().contains(mousePosition.x, mousePosition.y) && betting == true)
                     {
-                        player.setBet(player.getBet() + 5); 
+                        if (player.canBet(player.getBet() + 5))
+                        {
+                            player.setBet(player.getBet() + 5);
+                        }
                     }
 
                     if (twentyFiveDollar.getGlobalBounds().contains(mousePosition.x, mousePosition.y) && betting == true)
                     {
-                        player.setBet(player.getBet() + 25);    
+                        if (player.canBet(player.getBet() + 25))
+                        {
+                            player.setBet(player.getBet() + 25);
+                        }
                     }
 
                     if (oneHundredDollar.getGlobalBounds().contains(mousePosition.x, mousePosition.y) && betting == true)
                     {
-                        player.setBet(player.getBet() + 100);
+                        if (player.canBet(player.getBet() + 100))
+                        {
+                            player.setBet(player.getBet() + 100);
+                        }
                     }
 
-                    if (done.getGlobalBounds().contains(mousePosition.x, mousePosition.y))
+                    if (done.getGlobalBounds().contains(mousePosition.x, mousePosition.y) && betting == true)    
                     {
                         betting = false;   
-                        cout << player.getBet() << endl << "Betting is over" << endl;  
+                        cout << player.createBetAmount(); 
                     }
 
                     if (Hit.getGlobalBounds().contains(mousePosition.x, mousePosition.y)    //if mouse is clicked the hit buttton
@@ -266,35 +282,47 @@ int main(void)
                 Stand.setTexture(standTexture);
 
                 //winner and loser logic 
-                if ((player.getHandValue() > dealer.getHandValue()) && (21 > dealer.getHandValue()) && (player.getHandValue() <= 21))  // player won 
+                if ((player.getHandValue() > dealer.getHandValue()) && (21 > dealer.getHandValue()) && (player.getHandValue() <= 21) && outcomeDecided == false)  // player won 
                 {
                     outcomeTexture.loadFromFile("Cards/win.png");
                     player.betPayout(); 
+                    cout << player.createWinMes(); 
+                    outcomeDecided = true; 
                 }
-                else if ((21 < dealer.getHandValue()) && (player.getHandValue() <= 21)) // dealer busted 
+                else if ((21 < dealer.getHandValue()) && (player.getHandValue() <= 21) && outcomeDecided == false) // dealer busted 
                 {
                     outcomeTexture.loadFromFile("Cards/dealerBust.png");
                     player.betPayout();
+                    cout << player.createWinMes(); 
+                    outcomeDecided = true;
                 }
-                else if ((player.getHandValue() < dealer.getHandValue()) && (21 < player.getHandValue()) && (dealer.getHandValue() <= 21)) // player bust 
+                else if ((player.getHandValue() > dealer.getHandValue()) && (21 < player.getHandValue()) && (dealer.getHandValue() <= 21) && outcomeDecided == false) // player bust  
                 {
-                    outcomeTexture.loadFromFile("Cards/bust.png");
                     player.betLoser(); 
+                    cout << player.createLossMes(); 
+                    outcomeDecided = true;
+                    outcomeTexture.loadFromFile("Cards/bust.png");
   
                 }
-                else if (((player.getHandValue() < dealer.getHandValue()) && (21 > player.getHandValue())) && (dealer.getHandValue() <= 21)) // dealer wins
+                else if (((player.getHandValue() < dealer.getHandValue()) && (21 > player.getHandValue())) && (dealer.getHandValue() <= 21) && outcomeDecided == false) // dealer wins
                 {
-                    outcomeTexture.loadFromFile("Cards/loser.png");
                     player.betLoser();   
+                    cout << player.createLossMes(); 
+                    outcomeDecided = true; 
+                    outcomeTexture.loadFromFile("Cards/loser.png");
                 }
-                else if (player.getHandValue() == 21 && (player.getHandValue() > dealer.getHandValue() || dealer.getHandValue() < 21)) //blackjack wins
+                else if (player.getHandValue() == 21 && (player.getHandValue() > dealer.getHandValue() || dealer.getHandValue() < 21) && outcomeDecided == false) //blackjack wins
                 {
                     outcomeTexture.loadFromFile("Cards/win.png");  
                     player.betBlackJack();  
+                    cout << player.createWinMes();   
+                    outcomeDecided = true;
                 }
-                else if(player.getHandValue() == dealer.getHandValue() && player.getHandValue() <= 21)
+                else if(player.getHandValue() == dealer.getHandValue() && player.getHandValue() <= 21 && outcomeDecided == false)
                 {
                     outcomeTexture.loadFromFile("Cards/push.png");
+                    cout << player.playerDraw;   
+                    outcomeDecided = true;
                 }
 
                 outcome.setTexture(outcomeTexture);
