@@ -19,7 +19,7 @@ public:
 
 	void testAcesCalculation(void);
 
-	//test here
+	void testHit(void);
 
 	void runTests(void);
 private:
