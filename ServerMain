@@ -1,0 +1,25 @@
+// TCP Server
+#include "Server.h"
+
+int main() {
+
+    std::ofstream file;  
+    file.open("gameLog.txt", std::ios::out); 
+    WSADATA wsaData;
+    SOCKET serverSocket; 
+    sockaddr_in serverAddr;
+
+    initializeWSA(wsaData); 
+    createSocket(serverSocket);  
+    bindIPAddr(serverAddr, serverSocket); 
+    listen(serverSocket);
+
+    SOCKET clientSocket = acceptCommunications(serverSocket);
+
+    string message = recieveData(clientSocket, serverSocket); 
+    writeToFile(file, message); 
+
+    closeSocket(serverSocket, clientSocket);  
+
+    return 0;
+}
