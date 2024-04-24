@@ -41,7 +41,7 @@ int main(void)
     srand((unsigned int)time(NULL));
     Deck gDeck;
     Player* player = new Player(gDeck);
-    Dealer* dealer = new Dealer(gDeck); 
+    Dealer* dealer = new Dealer(gDeck);
     player->setBank(200);
 
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "BLACKJACK");
@@ -119,6 +119,7 @@ int main(void)
     bool didPlayerWin = false;
     bool dealerAICalled = false;
     bool outcomeDecided = false;
+    int tempBank = 0; 
 
     while (player->getBank() > 0)
     {
@@ -234,6 +235,11 @@ int main(void)
                     Hit.setTexture(HitTexture);
                     flip = true;
                 }
+                else
+                {
+                    HitTexture.loadFromFile("Cards/redHitButton.png");
+                    Hit.setTexture(HitTexture);
+                }
 
                 if (player->getCard(2).getImage() != "\0" || canHit == false) // if player cannot double down anymore change sprite immage 
                 {
@@ -242,6 +248,13 @@ int main(void)
 
 
                 }
+                else
+                {
+                    DDtexture.loadFromFile("Cards/greenDoubleDown.png");
+                    DoubleDown.setTexture(DDtexture);
+                }
+
+                
             }
 
 
@@ -341,6 +354,17 @@ int main(void)
             {
                 Sleep(2000);
                 window.clear();
+
+                betting = true;
+                canHit = true;
+                isAbleToSplit = false; // bool to identify if player is able to split 
+                didDoubleDown = false;
+                flip = false; // for the back card  
+                didPlayerWin = false;
+                dealerAICalled = false;
+                outcomeDecided = false;
+
+
                 window.draw(background);
                 //buttons drawn
                 window.draw(Hit);
@@ -353,18 +377,14 @@ int main(void)
                 window.draw(oneHundredDollar);
                 window.draw(done);
 
-                betting = true;
-                canHit = true;
-                isAbleToSplit = false; // bool to identify if player is able to split 
-                didDoubleDown = false;
-                flip = false; // for the back card  
-                didPlayerWin = false;
-                dealerAICalled = false;
-                outcomeDecided = false;
-
+                tempBank = player->getBank(); 
                 player = new Player(gDeck);
                 dealer = new Dealer(gDeck);
+                player->setBank(tempBank); 
+
             }
+            standTexture.loadFromFile("Cards/StandButton.png");
+            Stand.setTexture(standTexture);
         }
     }
     return 0;
