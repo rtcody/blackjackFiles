@@ -79,7 +79,7 @@ bool Player::canBet(int potBet)
 
 void Player::setBet(int betAmount)
 {
-    if (canBet(betAmount))  
+    if (canBet(betAmount))
     {
         this->betAmount = betAmount;
     }
@@ -146,34 +146,38 @@ Player* Player::split()
 
 string Player::createWinMes(void)
 {
-    string message = "Player won ", intAm;  
-    message.append(std::to_string(betAmount));  
-    message.append("!"); 
+    string message = "Player won ", intAm;
+    message.append(std::to_string(betAmount));
+    message.append("!");
+    message.append("\n"); 
 
-    return message; 
+    return message;
 }
 
 string Player::createLossMes(void)
 {
     string message = "Player lost ", intAm;
-    message.append(std::to_string(betAmount));  
-     
-    return message; 
+    message.append(std::to_string(betAmount));
+    message.append("\n");
+
+    return message;
 }
 
 string Player::createBetAmount(void)
 {
-    string message = "Player bets ", intAm; 
-    message.append(std::to_string(betAmount));     
+    string message = "Player bets ", intAm;
+    message.append(std::to_string(betAmount));
+    message.append("\n");
 
-    return message;   
+    return message;
 }
 
 string Player::createBankAmount(void)
 {
     string message = "Player has ", intAm;
     message.append(std::to_string(bankAmount));
-    message.append(" in the bank!"); 
+    message.append(" in the bank!");
+    message.append("\n");
 
-    return message; 
+    return message;
 }
