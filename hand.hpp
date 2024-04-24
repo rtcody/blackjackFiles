@@ -34,6 +34,8 @@ public:
 	card getCard(int index);
 	int getHandValue();
 
+	void deal(Deck& gDeck); 
+
 
 protected: //changed to protected by Ben
 	card blackjackHand[11]; // 11 is the most cards you can have (All Aces) 
