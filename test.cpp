@@ -35,7 +35,7 @@ void Test::testDeckCreation()
 	getline(file, trash);
 
 	getline(file, trash, ',');
-	firstCard.setCardNum(stoi(trash)); 
+	firstCard.setCardNum(stoi(trash));
 
 	getline(file, trash, ',');
 	firstCard.setValue(stoi(trash));
@@ -174,16 +174,37 @@ void Test::testAcesCalculation()
 }
 
 /******************************************************************************\
-*	Method name:
-*	Date last modified:
-*	Description:
-*	Input parameters:
-*	Directly returns:
-*	Indirectly returns:
-*	Precondition:
-*	Postcondition:
+*	Method name: testHtt
+*	Date last modified: 4/24/2024
+*	Description: function will test the hit function
+*	Input parameters: void
+*	Directly returns: void
+*	Indirectly returns: void
+*	Precondition: void
+*	Postcondition: void
 \******************************************************************************/
-//test here
+void Test::testHit()
+{
+	Deck testDeck;
+	Dealer testHand(testDeck);
+
+	testHand.hit(testDeck);
+
+	
+	assert(testHand.getCard(2).getCardNum() != 0);
+	cout << "card number checkpoint passed" << endl;
+
+	assert(testHand.getCard(2).getValue() != 0);
+	cout << "card value checkpoint passed" << endl;
+
+	assert(testHand.getCard(2).getSuit() != '\0');
+	cout << "suit checkpoint passed" << endl;
+
+	assert(testHand.getCard(2).getImage() != "\0"); 
+	cout << "image checkpoint passed" << endl << endl; 
+}
+
+	
 
 /******************************************************************************\
 *	Method name: runTests
@@ -197,8 +218,33 @@ void Test::testAcesCalculation()
 \******************************************************************************/
 void Test::runTests()
 {
+	cout << endl << "-----Test Deck Creation-----" << endl;
 	testDeckCreation();
+
+	cout << endl << "-----Test Shuffle-----" << endl;
 	testDeckShuffle();
+
+	cout << endl << "-----Test Hand Population-----" << endl;
 	testHandPopulation();
+
+	cout << endl << "-----Test Ace Calculation -----" << endl;
 	testAcesCalculation();
+
+	cout << endl << "-----Test Hit-----" << endl;
+	testHit();
+
+	system("Pause");
+	system("cls");
+
+	cout << "---------------------------------BLACKJACK DESCRIPTION---------------------------------" << endl;
+	cout << "Blackjack is a popular card game where players aim to beat the dealer's hand without going" << endl;
+	cout << "over 21. Each player and the dealer start with two cards, and players can choose to 'hit' " << endl;
+	cout << "for another card or 'stand' with their current hand.Going over 21 results in a loss. After " << endl;
+	cout << "all players finish their turns, the dealer reveals their cards and must hit until reaching " << endl;
+	cout << "a total of 17 or higher.Winning hands are those closer to 21 than the dealer's without " << endl;
+	cout << "busting. Getting a 'blackjack' with an Ace and a 10 - value card earns a higher payout." << endl;
+	cout << "Master the basics and enjoy the excitement of blackjack!" << endl << endl;
+
+	system("Pause");
+
 }
