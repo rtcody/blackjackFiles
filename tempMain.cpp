@@ -8,6 +8,7 @@
 #include "windows.h"
 
 
+
 //Joey - I dont have client or any server thing so I will just be commenting the server stuff out 
 //#include "Client.h"
 
@@ -19,11 +20,12 @@ int main(void)
     //SOCKET clientSocket;
     //sockaddr_in serverAddr;
 
-    //initializeSocket(wsaData);  
+
+    //initializeSocket(wsaData);        
     //createSocket(clientSocket); 
     //connectToServer(serverAddr, clientSocket); 
 
-    //string message = player.createBankAmount(); 
+    //string message = player->createBankAmount();       
 
     //// Send user input to server
     //sendToServer(message, clientSocket);
@@ -39,7 +41,7 @@ int main(void)
     srand((unsigned int)time(NULL));
     Deck gDeck;
     Player* player = new Player(gDeck);
-    Dealer* dealer = new Dealer(gDeck);  
+    Dealer* dealer = new Dealer(gDeck); 
     player->setBank(200);
 
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "BLACKJACK");
@@ -190,7 +192,7 @@ int main(void)
                             && betting == false)
                         {
                             canHit = player->DoubleDown(gDeck);   // can hit set to false 
-                            player->getCard(2).getSprite().rotate(90.f);  
+                            player->getCard(2).getSprite().rotate(90.f);
                             didDoubleDown = true; // will be used to rotate card because after a double down you cant hit 
                             flip = true;
                         }
@@ -337,30 +339,31 @@ int main(void)
             window.display();
             if (outcomeDecided == true)
             {
-                window.clear(); 
-                window.draw(background); 
+                Sleep(2000);
+                window.clear();
+                window.draw(background);
                 //buttons drawn
-                window.draw(Hit); 
-                window.draw(DoubleDown); 
-                window.draw(Stand); 
-                window.draw(Split); 
-                window.draw(oneDollar); 
-                window.draw(fiveDollar); 
-                window.draw(twentyFiveDollar); 
-                window.draw(oneHundredDollar); 
-                window.draw(done); 
+                window.draw(Hit);
+                window.draw(DoubleDown);
+                window.draw(Stand);
+                window.draw(Split);
+                window.draw(oneDollar);
+                window.draw(fiveDollar);
+                window.draw(twentyFiveDollar);
+                window.draw(oneHundredDollar);
+                window.draw(done);
 
-                betting = true; 
+                betting = true;
                 canHit = true;
                 isAbleToSplit = false; // bool to identify if player is able to split 
-                didDoubleDown = false; 
+                didDoubleDown = false;
                 flip = false; // for the back card  
                 didPlayerWin = false;
                 dealerAICalled = false;
                 outcomeDecided = false;
 
-                player = new Player(gDeck);  
-                dealer = new Dealer(gDeck);  
+                player = new Player(gDeck);
+                dealer = new Dealer(gDeck);
             }
         }
     }
