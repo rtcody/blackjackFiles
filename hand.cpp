@@ -18,6 +18,15 @@ Hand::Hand(Deck& gameDeck)
 	computeHandValue();
 }
 
+void Hand::deal(Deck gDeck)
+{
+	handValue = 0; 
+	gDeck.shuffle(); 
+	blackjackHand[0] = gDeck.getCard(0); 
+	gDeck.shuffle(); 
+	blackjackHand[1] = gDeck.getCard(0); // since we shuffled it can be pulled from the top of the deck  
+}
+
 /// <summary>
 	/// computes the numerical value of the entire hand
 	/// </summary>
@@ -122,3 +131,4 @@ int Hand::getHandValue()
 	return handValue;
 
 }
+
