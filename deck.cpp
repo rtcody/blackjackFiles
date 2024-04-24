@@ -19,7 +19,7 @@ Deck::Deck()
 		temp.setValue(stoi(trash));
 
 		getline(file, trash, ',');
-		temp.setSuit(tempChar);
+		temp.setSuit(trash[0]);
 
 		getline(file, trash);
 		temp.setImage(trash);
