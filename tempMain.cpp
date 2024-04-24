@@ -35,8 +35,8 @@ int main(void)
 
 
 
-    ////  Test t;
-    ////t.runTests(); 
+      Test t;
+    t.runTests(); 
 
     srand((unsigned int)time(NULL));
     Deck gDeck;
@@ -121,9 +121,9 @@ int main(void)
     bool outcomeDecided = false;
     int tempBank = 0; 
 
-    while (player->getBank() > 0)
-    {
-        while (window.isOpen())
+    
+    
+        while (window.isOpen() && player->getBank() > 0)
         {
             window.display();
             sf::Event event;
@@ -194,6 +194,8 @@ int main(void)
                         {
                             canHit = player->DoubleDown(gDeck);   // can hit set to false 
                             player->getCard(2).getSprite().rotate(90.f);
+                            player->setBet(player->getBet() * 2);  // double down occurs
+                            cout << "Player Bet is now: " << player->getBet() << endl; 
                             didDoubleDown = true; // will be used to rotate card because after a double down you cant hit 
                             flip = true;
                         }
@@ -214,8 +216,9 @@ int main(void)
                         }
                     }
                 }
+                
 
-                if (player->canSplit() && player->getCard(2).getImage() == "\0")   // if first two cards have the same value (can split)
+                if ((player->canSplit()) && (player->getCard(2).getImage() == "\0") && (betting ==false))   // if first two cards have the same value (can split)
                 {
                     splitTexture.loadFromFile("Cards/splitButton.png");
                     Split.setTexture(splitTexture);
@@ -226,7 +229,7 @@ int main(void)
                     Split.setTexture(splitTexture);
 
                 }
-
+                
 
                 if (player->getHandValue() >= 21) // cannot hit anymore 
                 {
@@ -273,15 +276,19 @@ int main(void)
 
 
 
-
-            dealer->displayHand(window, 950, 50, didDoubleDown);
-            if (flip == false)
+            if (betting == false)
             {
-                window.draw(backCard);
+                dealer->displayHand(window, 950, 50, didDoubleDown);
+                if (flip == false)
+                {
+                    window.draw(backCard);
 
+                }
+            
+               player->displayHand(window, 820, 800, didDoubleDown);
+                
             }
-
-            player->displayHand(window, 820, 800, didDoubleDown);
+           
             didDoubleDown = false;
 
 
@@ -298,54 +305,60 @@ int main(void)
                     standTexture.loadFromFile("Cards/greyStandButton.png");
                     Stand.setTexture(standTexture);
 
+                   
                     //winner and loser logic 
-                    if ((player->getHandValue() > dealer->getHandValue()) && (21 > dealer->getHandValue()) && (player->getHandValue() <= 21) && outcomeDecided == false)  // player won 
+                    if (betting == false)
                     {
-                        outcomeTexture.loadFromFile("Cards/win.png");
-                        player->betPayout();
-                        cout << player->createWinMes();
-                        outcomeDecided = true;
-                    }
-                    else if ((21 < dealer->getHandValue()) && (player->getHandValue() <= 21) && outcomeDecided == false) // dealer busted 
-                    {
-                        outcomeTexture.loadFromFile("Cards/dealerBust.png");
-                        player->betPayout();
-                        cout << player->createWinMes();
-                        outcomeDecided = true;
-                    }
-                    else if ((player->getHandValue() > dealer->getHandValue()) && (21 < player->getHandValue()) && (dealer->getHandValue() <= 21) && outcomeDecided == false) // player bust  
-                    {
-                        player->betLoser();
-                        cout << player->createLossMes();
-                        outcomeDecided = true;
-                        outcomeTexture.loadFromFile("Cards/bust.png");
+                        if ((player->getHandValue() > dealer->getHandValue()) && (21 > dealer->getHandValue()) && (player->getHandValue() <= 21) && (outcomeDecided == false))  // player won 
+                        {
+                            outcomeTexture.loadFromFile("Cards/win.png");
+                           
+                            cout << player->createWinMes();
+                            outcomeDecided = true;
+                        }
+                        else if ((21 < dealer->getHandValue()) && (player->getHandValue() <= 21) && outcomeDecided == false) // dealer busted 
+                        {
+                            outcomeTexture.loadFromFile("Cards/dealerBust.png");
 
-                    }
-                    else if (((player->getHandValue() < dealer->getHandValue()) && (21 > player->getHandValue())) && (dealer->getHandValue() <= 21) && outcomeDecided == false) // dealer wins
-                    {
-                        player->betLoser();
-                        cout << player->createLossMes();
-                        outcomeDecided = true;
-                        outcomeTexture.loadFromFile("Cards/loser.png");
-                    }
-                    else if (player->getHandValue() == 21 && (player->getHandValue() > dealer->getHandValue() || dealer->getHandValue() < 21) && outcomeDecided == false) //blackjack wins
-                    {
-                        outcomeTexture.loadFromFile("Cards/win.png");
-                        player->betBlackJack();
-                        cout << player->createWinMes();
-                        outcomeDecided = true;
-                    }
-                    else if (player->getHandValue() == dealer->getHandValue() && player->getHandValue() <= 21 && outcomeDecided == false)
-                    {
-                        outcomeTexture.loadFromFile("Cards/push.png");
-                        cout << player->playerDraw;
-                        outcomeDecided = true;
+                            if (player->getHandValue() == 21)
+                            {
+                                player->betBlackJack();
+                            }
+                            player->betPayout();
+                            cout << player->createWinMes();
+                            outcomeDecided = true;
+                        }
+                        else if ((21 < player->getHandValue()) && outcomeDecided == false) // player bust  
+                        {
+                            player->betLoser();
+                            cout << player->createLossMes();
+                            outcomeDecided = true;
+                            outcomeTexture.loadFromFile("Cards/bust.png");
+
+                        }
+                        else if (((player->getHandValue() < dealer->getHandValue()) && (21 > player->getHandValue())) && (dealer->getHandValue() <= 21) && outcomeDecided == false) // dealer wins
+                        {
+                            player->betLoser();
+                            cout << player->createLossMes();
+                            outcomeDecided = true;
+                            outcomeTexture.loadFromFile("Cards/loser.png");
+                        }
+                        else if (player->getHandValue() == dealer->getHandValue() && player->getHandValue() <= 21 && outcomeDecided == false)
+                        {
+                            outcomeTexture.loadFromFile("Cards/push.png");
+                            cout << player->playerDraw;
+                            outcomeDecided = true;
+                        }
                     }
 
                     outcome.setTexture(outcomeTexture);
                     outcome.setScale(8.0f, 8.0f);
                     outcome.setPosition(1360, 740);
-                    window.draw(outcome);
+                    if (outcomeDecided == true)
+                    {
+                        window.draw(outcome);
+                    }
+
                 }
             }
 
@@ -381,11 +394,12 @@ int main(void)
                 player = new Player(gDeck);
                 dealer = new Dealer(gDeck);
                 player->setBank(tempBank); 
+                cout << "Bank Balance: " << player->getBank() << endl; 
 
             }
             standTexture.loadFromFile("Cards/StandButton.png");
             Stand.setTexture(standTexture);
         }
-    }
+    
     return 0;
 }
